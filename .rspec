@@ -1,0 +1,5 @@
+--color
+--format d
+--profile
+--default-path spec
+--require spec_helper

@@ -2,6 +2,7 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'json/schema/data_generator/version'
+require 'json/schema/data_generator/generator' # TODO - shouldn't have to do this?
 
 Gem::Specification.new do |spec|
   spec.name          = "json-schema-data_generator"

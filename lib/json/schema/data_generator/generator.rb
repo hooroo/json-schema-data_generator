@@ -1,49 +1,55 @@
 require 'json-schema/util/uri'
+require 'json/schema/data_generator/generators/string'
+require 'json/schema/data_generator/generators/integer'
+require 'json/schema/data_generator/generators/number'
+require 'json/schema/data_generator/generators/boolean'
+require 'json/schema/data_generator/generators/array'
+require 'byebug'
 
 module JSON
   module Schema
     module DataGenerator
       class Generator
 
-        def initialize(schema, opts = {})
-          @schema = {"$schema":"http://json-schema.org/draft-04/schema#","id":"http://event-schemas.hooroo.com/bookings/events/booking_blocked/1_0.json","type":"object","properties":{"booking":{"id":"booking","type":"object","properties":{"id":{"id":"id","type":"string"},"booking_reference":{"id":"booking_reference","type":"string"},"my_integer":{"id":"my_integer","type":"integer"}}}}}
-          @options = opts
+        def initialize(schema:, options: {})
+          @schema = schema
+          @options = options
         end
 
         def generate
-          require 'byebug'
-          byebug
-          parent = {}
+          data = {}
 
-          puts "DATA ----------- #{create_data(parent, schema[:properties])}"
-        end
-
-        def create_data(parent, hsh)
-
-          hsh.each do |property, value|
-            parent[property] = process_properties(value[:properties])
+          schema[:properties].each do |object, attributes|
+            data[object] = generate_data_for(attributes)
           end
 
-          parent
+          data
         end
 
-        def process_properties(properties)
-          if properties[:type] == 'object'
-            process_properties(properties[:properties])
-          else
-            properties.each do |property, value|
-              case value[:type]
-                when 'object'
-                  process_properties(properties[:properties])
 
-                when 'integer'
-                  'nice int!'
+        private
 
-                when 'string'
-                  'cool string!'
-              end
+        def generate_data_for(attributes)
+          result = {}
+
+          attributes[:properties].each do |object, attribute|
+            result[object] = case attribute[:type]
+              when 'object'
+                generate_data_for(attribute)
+              when 'string'
+                Generators::String.generate
+              when 'integer'
+                Generators::Integer.generate
+              when 'number'
+                Generators::Number.generate
+              when 'boolean'
+                Generators::Boolean.generate
+              when 'array'
+                Generators::Array.generate(attribute)
             end
           end
+
+          result
         end
 
 

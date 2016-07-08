@@ -9,52 +9,27 @@ module JSON
 
         let(:schema) do
           {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "id": "http://json-schemas.example.com/schemas.json",
-            "type": "object",
-            "properties": {
-              "parent_object": {
-                "id": "parent_object",
-                "type": "object",
-                "properties": {
-                  "string_property": {
-                    "id": "string_property",
-                    "type": "string"
-                  },
-                  "integer_property": {
-                    "id": "integer_property",
-                    "type": "integer"
-                  },
-                  "number_property": {
-                    "id": "number_property",
-                    "type": "number"
-                  },
-                  "boolean_property": {
-                    "id": "boolean_property",
-                    "type": "boolean"
-                  },
-                  "null_property": {
-                    "id": "null_property",
-                    "type": "null"
-                  },
-                  "array_property": {
-                    "id": "array_property",
-                    "type": "array",
-                    "items": array_items_schema
-                  },
-                  "nested_object": {
-                    "id": "nested_object",
-                    "description": "This object is nested",
-                    "type": "object",
-                    "properties": {
-                      "nested_string_property": {
-                        "id": "nested_string_property",
-                        "type": "string"
-                      },
-                      "nested_integer_property": {
-                        "id": "nested_integer_property",
-                        "type": "integer"
-                      }
+            '$schema': 'http://json-schema.org/draft-04/schema#',
+            'id': 'http://json-schemas.example.com/schemas.json',
+            'type': 'object',
+            'properties': {
+              'parent_object': {
+                'id': 'parent_object',
+                'type': 'object',
+                'properties': {
+                  'string_property': { 'id': 'string_property', 'type': 'string' },
+                  'integer_property': { 'id': 'integer_property', 'type': 'integer' },
+                  'number_property': { 'id': 'number_property', 'type': 'number' },
+                  'boolean_property': { 'id': 'boolean_property', 'type': 'boolean' },
+                  'null_property': { 'id': 'null_property', 'type': 'null' },
+                  'array_property': { 'id': 'array_property', 'type': 'array', items: array_property_items },
+                  'nested_object': {
+                    'id': 'nested_object',
+                    'description': 'This object is nested',
+                    'type': 'object',
+                    'properties': {
+                      'nested_string_property': { 'id': 'nested_string_property', 'type': 'string' },
+                      'nested_integer_property': { 'id': 'nested_integer_property', 'type': 'integer' }
                     }
                   }
                 }
@@ -63,11 +38,7 @@ module JSON
           }
         end
 
-        let(:array_items_schema) do
-          {
-            "type": "string"
-          }
-        end
+        let(:array_property_items) { { 'type': 'string' } }
 
         describe '#generate' do
 
@@ -110,19 +81,7 @@ module JSON
 
               context 'when the items in the array have a schema for each element' do
 
-                let(:array_items_schema) do
-                  [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "integer"
-                    },
-                    {
-                      "type": "number"
-                    }
-                  ]
-                end
+                let(:array_property_items) { [{ 'type': 'string' }, { 'type': 'integer' }, { 'type': 'number' }] }
 
                 it 'generates an array when the property type is array' do
                   expect(generated_data[:parent_object][:array_property]).to be_an(Array)

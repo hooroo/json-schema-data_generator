@@ -1,18 +1,20 @@
+require 'json'
+require 'json-schema'
 require 'json/schema/data_generator/locator'
 
 module JSON
-  module Schema
-    module DataGenerator
+  class Schema
+    class DataGenerator
       class Generator
 
         def initialize(schema:, generator_locator: Locator.new, options: {})
-          @schema = schema
+          @schema = JSON::Schema.new(schema, Addressable::URI.parse(schema[:id]))
           @generator_locator = generator_locator
           @options = options
         end
 
         def generate
-          schema[:properties].inject({}) do |hsh, (object, attributes)|
+          schema.schema[:properties].inject({}) do |hsh, (object, attributes)|
             hsh[object] = generate_values_for(attributes)
             hsh
           end

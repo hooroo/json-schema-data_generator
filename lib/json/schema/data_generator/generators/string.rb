@@ -1,9 +1,9 @@
 require 'faker'
 
 module JSON
-  module Schema
-    module DataGenerator
-      module Generators
+  class Schema
+    class DataGenerator
+      class Generators
         class String < Base
 
           def self.generate_value_for(attribute)

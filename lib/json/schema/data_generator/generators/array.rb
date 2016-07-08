@@ -1,7 +1,7 @@
 module JSON
-  module Schema
-    module DataGenerator
-      module Generators
+  class Schema
+    class DataGenerator
+      class Generators
         class Array < Base
 
           # TODO: handle length and uniqueness constraints

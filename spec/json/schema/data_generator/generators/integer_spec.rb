@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 module JSON
-  module Schema
-    module DataGenerator
-      module Generators
+  class Schema
+    class DataGenerator
+      class Generators
         describe Integer do
 
           describe '.generate_value_for' do

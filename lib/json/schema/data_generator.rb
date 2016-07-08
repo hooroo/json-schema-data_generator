@@ -1,4 +1,5 @@
-require "json/schema/data_generator/version"
+# require 'json-schema'
+require 'json/schema/data_generator/generator'
 
 module JSON
   module Schema

@@ -8,8 +8,8 @@ require 'json/schema/data_generator/generators/array'
 require 'active_support/inflector'
 
 module JSON
-  module Schema
-    module DataGenerator
+  class Schema
+    class DataGenerator
       class Locator
 
         def locate_generator_for(type)

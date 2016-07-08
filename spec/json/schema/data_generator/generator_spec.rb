@@ -1,35 +1,35 @@
 require 'spec_helper'
 
 module JSON
-  module Schema
-    module DataGenerator
+  class Schema
+    class DataGenerator
       describe Generator do
 
         subject(:generator) { described_class.new(schema: schema) }
 
         let(:schema) do
           {
-            '$schema': 'http://json-schema.org/draft-04/schema#',
-            'id': 'http://json-schemas.example.com/schemas.json',
-            'type': 'object',
-            'properties': {
-              'parent_object': {
-                'id': 'parent_object',
-                'type': 'object',
-                'properties': {
-                  'string_property': { 'id': 'string_property', 'type': 'string' },
-                  'integer_property': { 'id': 'integer_property', 'type': 'integer' },
-                  'number_property': { 'id': 'number_property', 'type': 'number' },
-                  'boolean_property': { 'id': 'boolean_property', 'type': 'boolean' },
-                  'null_property': { 'id': 'null_property', 'type': 'null' },
-                  'array_property': { 'id': 'array_property', 'type': 'array', items: array_property_items },
-                  'nested_object': {
-                    'id': 'nested_object',
-                    'description': 'This object is nested',
-                    'type': 'object',
-                    'properties': {
-                      'nested_string_property': { 'id': 'nested_string_property', 'type': 'string' },
-                      'nested_integer_property': { 'id': 'nested_integer_property', 'type': 'integer' }
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "id": "http://json-schemas.example.com/schemas.json",
+            "type": "object",
+            "properties": {
+              "parent_object": {
+                "id": "parent_object",
+                "type": "object",
+                "properties": {
+                  "string_property": { "id": "string_property", "type": "string" },
+                  "integer_property": { "id": "integer_property", "type": "integer" },
+                  "number_property": { "id": "number_property", "type": "number" },
+                  "boolean_property": { "id": "boolean_property", "type": "boolean" },
+                  "null_property": { "id": "null_property", "type": "null" },
+                  "array_property": { "id": "array_property", "type": "array", items: array_property_items },
+                  "nested_object": {
+                    "id": "nested_object",
+                    "description": "This object is nested",
+                    "type": "object",
+                    "properties": {
+                      "nested_string_property": { "id": "nested_string_property", "type": "string" },
+                      "nested_integer_property": { "id": "nested_integer_property", "type": "integer" }
                     }
                   }
                 }
@@ -38,7 +38,7 @@ module JSON
           }
         end
 
-        let(:array_property_items) { { 'type': 'string' } }
+        let(:array_property_items) { { "type": "string" } }
 
         describe '#generate' do
 
@@ -68,29 +68,23 @@ module JSON
 
             describe 'generating an array' do
 
-              context 'when the items in the array have a single schema' do
+              let(:generated_array) { generated_data[:parent_object][:array_property] }
 
-                it 'generates an array when the property type is array' do
-                  expect(generated_data[:parent_object][:array_property]).to be_an(Array)
-                end
+              context 'when the items property of the attribute has a single schema' do
 
-                it 'sets the type of each element in the array to the type specified in the schema' do
-                  expect(generated_data[:parent_object][:array_property]).to all(be_a(String))
+                let(:array_property_items) { { 'type': 'string' } }
+
+                it 'generates an array' do
+                  expect(generated_array).to be_an(Array)
                 end
               end
 
-              context 'when the items in the array have a schema for each element' do
+              context 'when the items property in the array has a schema for each element' do
 
                 let(:array_property_items) { [{ 'type': 'string' }, { 'type': 'integer' }, { 'type': 'number' }] }
 
-                it 'generates an array when the property type is array' do
-                  expect(generated_data[:parent_object][:array_property]).to be_an(Array)
-                end
-
-                it 'sets the type of each element in the array to the types specified in the schema' do
-                  expect(generated_data[:parent_object][:array_property][0]).to be_a(String)
-                  expect(generated_data[:parent_object][:array_property][1]).to be_an(Integer)
-                  expect(generated_data[:parent_object][:array_property][2]).to be_a(Float)
+                it 'generates an array' do
+                  expect(generated_array).to be_an(Array)
                 end
               end
             end

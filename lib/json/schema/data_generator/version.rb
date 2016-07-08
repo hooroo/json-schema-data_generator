@@ -1,6 +1,6 @@
 module JSON
-  module Schema
-    module DataGenerator
+  class Schema
+    class DataGenerator
 
       MAJOR = 1
       MINOR = 0

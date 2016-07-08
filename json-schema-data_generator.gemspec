@@ -2,7 +2,8 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'json/schema/data_generator/version'
-require 'json/schema/data_generator/generator' # TODO - shouldn't have to do this?
+require 'json/schema/data_generator/generator'
+# TODO - fix up requiring files
 
 Gem::Specification.new do |spec|
   spec.name          = "json-schema-data_generator"
@@ -29,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.4'
-  spec.add_development_dependency 'byebug'
   spec.add_runtime_dependency 'json-schema', '~> 2.5'
   spec.add_runtime_dependency 'faker', '~> 1.6'
+  spec.add_runtime_dependency 'activesupport', '~> 5.0'
 end

@@ -33,6 +33,10 @@ module JSON
                     "id": "boolean_property",
                     "type": "boolean"
                   },
+                  "null_property": {
+                    "id": "null_property",
+                    "type": "null"
+                  },
                   "array_property": {
                     "id": "array_property",
                     "type": "array",
@@ -87,6 +91,10 @@ module JSON
               expect(generated_data[:parent_object][:boolean_property]).to eq(true).or(eq(false))
             end
 
+            it 'generates nil when the property type is null' do
+              expect(generated_data[:parent_object][:null_property]).to be_nil
+            end
+
             describe 'generating an array' do
 
               context 'when the items in the array have a single schema' do
@@ -121,7 +129,6 @@ module JSON
                 end
 
                 it 'sets the type of each element in the array to the types specified in the schema' do
-                  byebug
                   expect(generated_data[:parent_object][:array_property][0]).to be_a(String)
                   expect(generated_data[:parent_object][:array_property][1]).to be_an(Integer)
                   expect(generated_data[:parent_object][:array_property][2]).to be_a(Float)

@@ -1,13 +1,11 @@
-require 'faker'
-
 module JSON
   module Schema
     module DataGenerator
       module Generators
-        class String < Base
+        class Base
 
           def self.generate_value_for(attribute)
-            Faker::Lorem.sentence
+            raise NotImplementedError.new, "the 'generate_value_for' method must be defined in a subclass"
           end
 
         end

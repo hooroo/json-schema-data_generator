@@ -2,42 +2,31 @@ module JSON
   module Schema
     module DataGenerator
       module Generators
-        class Array
+        class Array < Base
 
-          def self.generate(attribute)
-            byebug
-            arr = []
+          # TODO: handle length and uniqueness constraints
 
-            if attribute[:items].is_a?(Array)
-              val = case attribute[:items][:type]
-                when 'string'
-                  'cool string!'
-                when 'integer'
-                  42
-                when 'number'
-                  17.62
-                when 'boolean'
-                  [true, false].sample
-              end
+          DEFAULT_NUMBER_OF_ARRAY_ITEMS = 3
 
-              3.times { |n| arr << val }
+          def self.generate_value_for(attribute)
+            items = attribute[:items]
+            value = []
 
-            elsif attribute[:items].is_a?(Array)
-              attribute[:items].each do |item|
-                arr << case item[:type]
-                  when 'string'
-                    'cool string!'
-                  when 'integer'
-                    42
-                  when 'number'
-                    17.62
-                  when 'boolean'
-                    [true, false].sample
-                end
-              end
+            if items.is_a?(Hash)
+              DEFAULT_NUMBER_OF_ARRAY_ITEMS.times { value << generate_values_for(items) }
+            elsif items.is_a?(::Array)
+              items.each { |item| value << generate_values_for(item) }
             end
 
-            arr
+            value
+          end
+
+
+          private
+
+          def self.generate_values_for(item)
+            generator = Locator.new.locate_generator_for(item[:type])
+            generator.generate_value_for(item)
           end
 
         end

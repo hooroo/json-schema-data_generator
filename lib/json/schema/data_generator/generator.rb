@@ -1,61 +1,39 @@
-require 'json-schema/util/uri'
-require 'json/schema/data_generator/generators/string'
-require 'json/schema/data_generator/generators/integer'
-require 'json/schema/data_generator/generators/number'
-require 'json/schema/data_generator/generators/boolean'
-require 'json/schema/data_generator/generators/array'
-require 'byebug'
+require 'json/schema/data_generator/locator'
 
 module JSON
   module Schema
     module DataGenerator
       class Generator
 
-        def initialize(schema:, options: {})
+        def initialize(schema:, generator_locator: Locator.new, options: {})
           @schema = schema
+          @generator_locator = generator_locator
           @options = options
         end
 
         def generate
-          data = {}
-
-          schema[:properties].each do |object, attributes|
-            data[object] = generate_data_for(attributes)
+          schema[:properties].inject({}) do |hsh, (object, attributes)|
+            hsh[object] = generate_values_for(attributes)
+            hsh
           end
-
-          data
         end
 
 
         private
 
-        def generate_data_for(attributes)
-          result = {}
+        attr_reader :schema, :generator_locator, :options
 
-          attributes[:properties].each do |object, attribute|
-            result[object] = case attribute[:type]
-              when 'object'
-                generate_data_for(attribute)
-              when 'string'
-                Generators::String.generate
-              when 'integer'
-                Generators::Integer.generate
-              when 'number'
-                Generators::Number.generate
-              when 'boolean'
-                Generators::Boolean.generate
-              when 'array'
-                Generators::Array.generate(attribute)
-            end
+        def generate_values_for(attributes)
+          attributes[:properties].inject({}) do |hsh, (object, attribute)|
+            hsh[object] = attribute[:type] == 'object' ? generate_values_for(attribute) : generate_value_for(attribute)
+            hsh
           end
-
-          result
         end
 
-
-        private
-
-        attr_reader :schema, :options
+        def generate_value_for(attribute)
+          generator = generator_locator.locate_generator_for(attribute[:type])
+          generator.generate_value_for(attribute)
+        end
 
       end
     end

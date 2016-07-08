@@ -1,13 +1,11 @@
-require 'faker'
-
 module JSON
   module Schema
     module DataGenerator
       module Generators
-        class String < Base
+        class Null < Base
 
           def self.generate_value_for(attribute)
-            Faker::Lorem.sentence
+            nil
           end
 
         end

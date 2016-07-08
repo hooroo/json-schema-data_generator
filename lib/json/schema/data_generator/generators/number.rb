@@ -4,9 +4,9 @@ module JSON
   module Schema
     module DataGenerator
       module Generators
-        class Number
+        class Number < Base
 
-          def self.generate
+          def self.generate_value_for(attribute)
             Faker::Number.decimal(3, 2).to_f
           end
 

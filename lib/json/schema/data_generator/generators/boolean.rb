@@ -2,9 +2,9 @@ module JSON
   module Schema
     module DataGenerator
       module Generators
-        class Boolean
+        class Boolean < Base
 
-          def self.generate
+          def self.generate_value_for(attribute)
             [true, false].sample
           end
 

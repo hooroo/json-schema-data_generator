@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'json/schema/data_generator'
+require 'data_generator'
 
 Gem::Specification.new do |spec|
   spec.name          = "json-schema-data_generator"
-  spec.version       = JSON::Schema::DataGenerator::VERSION
+  spec.version       = DataGenerator::VERSION
   spec.authors       = ["Michael Chapman"]
   spec.email         = ["michaelc@hooroo.com"]
 
@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.4'
-  spec.add_runtime_dependency 'json-schema', '~> 2.5'
+  spec.add_runtime_dependency 'json-schema', '~> 2.7'
   spec.add_runtime_dependency 'faker', '~> 1.6'
-  spec.add_runtime_dependency 'activesupport', '~> 5.0'
 end
